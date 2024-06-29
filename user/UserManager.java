@@ -6,7 +6,7 @@ import java.util.Map;
 
 public class UserManager {
 
-    private static final String CSV_FILE_PATH = "data/UserData.csv";
+    private static final String CSV_USER_FILE_PATH = "data/UserData.csv";
     private Map<String, User> users;
 
     public UserManager() {
@@ -16,7 +16,7 @@ public class UserManager {
     }
 
     private void loadUsers() {
-        try (BufferedReader reader = new BufferedReader(new FileReader(CSV_FILE_PATH))) {
+        try (BufferedReader reader = new BufferedReader(new FileReader(CSV_USER_FILE_PATH))) {
             String line;
 
             while ((line = reader.readLine()) != null) {
@@ -33,9 +33,9 @@ public class UserManager {
     }
 
     private void saveUsers() {
-        try (BufferedWriter writer = new BufferedWriter(new FileWriter(CSV_FILE_PATH))) {
+        try (BufferedWriter writer = new BufferedWriter(new FileWriter(CSV_USER_FILE_PATH))) {
             for (User user : users.values()) {
-                writer.write(user.getID() + "," + user.getUsername() + "," + user.getPassword() + "," +
+                writer.write(user.getUserID() + "," + user.getUsername() + "," + user.getPassword() + "," +
                         user.getName() + "," + user.getAddress() + "," + user.getPhoneNumber() + "," + user.getEmail());
                 writer.newLine();
             }
@@ -55,7 +55,7 @@ public class UserManager {
     }
 
     public void addUser(User user) {
-        users.put(user.getID(), user);
+        users.put(user.getUserID(), user);
         saveUsers();
     }
 

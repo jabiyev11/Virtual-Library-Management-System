@@ -5,7 +5,7 @@ import java.util.UUID;
 
 public class User {
 
-    private String ID; // String because of UUID unique ID generation
+    private String userID; // String because of UUID unique userID generation
     private String username;
     private String password;
     private String name;
@@ -17,7 +17,7 @@ public class User {
 
     //for user creation during the signup
     public User(String username, String password, String name, String address, String phoneNumber, String email,  UserRole role) {
-        this.ID = generateUniqueID();
+        this.userID = generateUniqueID();
         this.username = username;
         this.password = password;
         this.name = name;
@@ -29,9 +29,9 @@ public class User {
     }
 
 
-    //To load users from csv, we will need ID for that
-    public User(String ID, String username, String password, String name, String address, String phoneNumber, String email) {
-        this.ID = ID;
+    //To load users from csv, we will need userID for that
+    public User(String userID, String username, String password, String name, String address, String phoneNumber, String email) {
+        this.userID = userID;
         this.username = username;
         this.password = password;
         this.name = name;
@@ -41,8 +41,8 @@ public class User {
     }
 
     //For Librarian creation, additional constructor because we do not want to write his credentials in the csv file
-    public User(String ID, String username, String password, String name, String address, String phoneNumber, String email, UserRole role) {
-        this.ID = ID;
+    public User(String userID, String username, String password, String name, String address, String phoneNumber, String email, UserRole role) {
+        this.userID = userID;
         this.username = username;
         this.password = password;
         this.name = name;
@@ -56,12 +56,12 @@ public class User {
         return UUID.randomUUID().toString();
     }
 
-    public String getID() {
-        return ID;
+    public String getUserID() {
+        return userID;
     }
 
-    public void setID(String ID) {
-        this.ID = ID;
+    public void setUserID(String userID) {
+        this.userID = userID;
     }
 
     public String getName() {
@@ -116,18 +116,18 @@ public class User {
     public boolean equals(Object o) {
         if (this == o) return true;
         if (!(o instanceof User user)) return false;
-        return Objects.equals(ID, user.ID) && Objects.equals(name, user.name) && Objects.equals(address, user.address) && Objects.equals(phoneNumber, user.phoneNumber) && Objects.equals(email, user.email) && Objects.equals(username, user.username) && Objects.equals(password, user.password);
+        return Objects.equals(userID, user.userID) && Objects.equals(name, user.name) && Objects.equals(address, user.address) && Objects.equals(phoneNumber, user.phoneNumber) && Objects.equals(email, user.email) && Objects.equals(username, user.username) && Objects.equals(password, user.password);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(ID, name, address, phoneNumber, email, username, password);
+        return Objects.hash(userID, name, address, phoneNumber, email, username, password);
     }
 
     @Override
     public String toString() {
         return "user.User{" +
-                "ID='" + ID + '\'' +
+                "userID='" + userID + '\'' +
                 ", name='" + name + '\'' +
                 ", address='" + address + '\'' +
                 ", phoneNumber='" + phoneNumber + '\'' +

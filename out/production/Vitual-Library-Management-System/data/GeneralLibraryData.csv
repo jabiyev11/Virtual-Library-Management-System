@@ -1,0 +1,74 @@
+bookID,title,author,bookGenre,publicationDate,isAvailable
+1,The Great Gatsby,F. Scott Fitzgerald,FICTION,1925-04-10,true
+2,To Kill a Mockingbird,Harper Lee,FICTION,1960-07-11,true
+3,1984,George Orwell,DYSTOPIAN,1949-06-08,true
+4,Pride and Prejudice,Jane Austen,ROMANCE,1813-01-28,true
+5,The Catcher in the Rye,J.D. Salinger,FICTION,1951-07-16,true
+6,The Hobbit,J.R.R. Tolkien,FANTASY,1937-09-21,true
+7,Animal Farm,George Orwell,SATIRE,1945-08-17,true
+8,War and Peace,Leo Tolstoy,HISTORICAL,1869-01-01,true
+9,The Odyssey,Homer,CLASSIC,1800-01-01,true
+10,Moby Dick,Herman Melville,ADVENTURE,1851-10-18,true
+11,Crime and Punishment,Fyodor Dostoevsky,CRIME,1866-01-01,true
+12,The Iliad,Homer,CLASSIC,1750-01-01,true
+13,Brave New World,Aldous Huxley,DYSTOPIAN,1932-01-01,true
+14,Wuthering Heights,Emily Brontë,ROMANCE,1847-12-01,true
+15,Jane Eyre,Charlotte Brontë,ROMANCE,1847-10-16,true
+16,The Divine Comedy,Dante Alighieri,POETRY,1320-01-01,true
+17,The Brothers Karamazov,Fyodor Dostoevsky,PHILOSOPHICAL,1880-01-01,true
+19,The Count of Monte Cristo,Alexandre Dumas,ADVENTURE,1844-01-01,true
+20,Ulysses,James Joyce,MODERNIST,1922-02-02,true
+21,The Picture of Dorian Gray,Oscar Wilde,FICTION,1890-01-01,true
+22,Great Expectations,Charles Dickens,FICTION,1861-01-01,true
+23,Alice's Adventures in Wonderland,Lewis Carroll,FANTASY,1865-11-26,true
+24,Frankenstein,Mary Shelley,HORROR,1818-01-01,true
+25,Dracula,Bram Stoker,HORROR,1897-01-01,true
+26,Don Quixote,Miguel de Cervantes,ADVENTURE,1605-01-01,true
+27,Les Misérables,Victor Hugo,HISTORICAL,1862-01-01,true
+28,The Adventures of Huckleberry Finn,Mark Twain,ADVENTURE,1884-01-01,true
+29,The Grapes of Wrath,John Steinbeck,FICTION,1939-04-14,true
+30,The Stranger,Albert Camus,PHILOSOPHICAL,1942-01-01,true
+31,Heart of Darkness,Joseph Conrad,ADVENTURE,1899-01-01,true
+32,Madame Bovary,Gustave Flaubert,FICTION,1857-01-01,true
+33,The Old Man and the Sea,Ernest Hemingway,FICTION,1952-09-01,true
+34,The Sun Also Rises,Ernest Hemingway,FICTION,1926-10-22,true
+35,A Farewell to Arms,Ernest Hemingway,FICTION,1929-01-01,true
+36,For Whom the Bell Tolls,Ernest Hemingway,FICTION,1940-01-01,true
+37,Anna Karenina,Leo Tolstoy,ROMANCE,1878-01-01,true
+38,The Sound and the Fury,William Faulkner,FICTION,1929-01-01,true
+39,The Metamorphosis,Franz Kafka,FICTION,1915-01-01,true
+40,In Search of Lost Time,Marcel Proust,MODERNIST,1913-01-01,true
+41,Lolita,Vladimir Nabokov,FICTION,1955-09-15,true
+42,Bleak House,Charles Dickens,FICTION,1853-01-01,true
+43,A Tale of Two Cities,Charles Dickens,HISTORICAL,1859-01-01,true
+44,David Copperfield,Charles Dickens,FICTION,1850-01-01,true
+45,Mansfield Park,Jane Austen,ROMANCE,1814-01-01,true
+46,Emma,Jane Austen,ROMANCE,1815-01-01,true
+47,Persuasion,Jane Austen,ROMANCE,1817-01-01,true
+48,Sense and Sensibility,Jane Austen,ROMANCE,1811-01-01,true
+49,The Scarlet Letter,Nathaniel Hawthorne,HISTORICAL,1850-01-01,true
+50,The Hunchback of Notre-Dame,Victor Hugo,ROMANCE,1831-01-01,true
+51,The Trial,Franz Kafka,FICTION,1925-01-01,true
+52,The Castle,Franz Kafka,FICTION,1926-01-01,true
+53,The Prince,Niccolò Machiavelli,POLITICAL,1532-01-01,true
+54,The Art of War,Sun Tzu,MILITARY,1500-01-01,true
+55,Meditations,Marcus Aurelius,PHILOSOPHICAL,1180-01-01,true
+56,The Republic,Plato,PHILOSOPHICAL,1380-01-01,true
+57,Thus Spoke Zarathustra,Friedrich Nietzsche,PHILOSOPHICAL,1883-01-01,true
+58,The Aeneid,Virgil,CLASSIC,1919-01-01,true
+59,The Canterbury Tales,Geoffrey Chaucer,POETRY,1400-01-01,true
+60,Gulliver's Travels,Jonathan Swift,SATIRE,1726-01-01,true
+61,Moby-Dick,Herman Melville,ADVENTURE,1851-11-14,true
+62,The Three Musketeers,Alexandre Dumas,ADVENTURE,1844-01-01,true
+63,Treasure Island,Robert Louis Stevenson,ADVENTURE,1883-01-01,true
+64,Robinson Crusoe,Daniel Defoe,ADVENTURE,1719-04-25,true
+65,The Adventures of Tom Sawyer,Mark Twain,ADVENTURE,1876-01-01,true
+66,The Call of the Wild,Jack London,ADVENTURE,1903-01-01,true
+67,White Fang,Jack London,ADVENTURE,1906-01-01,true
+68,The Red Badge of Courage,Stephen Crane,HISTORICAL,1895-01-01,true
+69,Little Women,Louisa May Alcott,FICTION,1868-01-01,true
+70,The Chronicles of Narnia,C.S. Lewis,FANTASY,1950-10-16,true
+71,The Lord of the Rings,J.R.R. Tolkien,FANTASY,1954-07-29,true
+72,Harry Potter and the Philosopher's Stone,J.K. Rowling,FANTASY,1997-06-26,true
+73,The Hunger Games,Suzanne Collins,DYSTOPIAN,2008-09-14,true
+74,Divergent,Veronica Roth,DYSTOPIAN,2011-04-25,true
