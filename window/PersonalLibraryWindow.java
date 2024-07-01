@@ -34,8 +34,8 @@ public class PersonalLibraryWindow extends JFrame {
 
         for(int i = 0; i < personalBooks.size(); i++){
             Book book = personalBooks.get(i);
-            data[i][0] = book.getAuthor();
-            data[i][1] = book.getTitle();
+            data[i][0] = book.getTitle();
+            data[i][1] = book.getAuthor();
             data[i][2] = book.getBookGenre().toString();
             data[i][3] = book.getPublicationDate().toString();
         }
