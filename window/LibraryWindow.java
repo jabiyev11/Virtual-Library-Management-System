@@ -2,6 +2,7 @@ package window;
 
 import library.Book;
 import library.GeneralLibrary;
+import user.User;
 
 import javax.swing.*;
 import java.awt.*;
@@ -10,8 +11,11 @@ import java.util.List;
 public class LibraryWindow extends JFrame {
 
     private static final String CSV_GENERAL_LIBRARY_FILE_PATH = "data/GeneralLibraryData.csv";
+    private static User currentUser;
 
-    public LibraryWindow() {
+    public LibraryWindow(User currentUser) {
+        this.currentUser = currentUser;
+
         setTitle("Library System");
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         setSize(900, 600);
@@ -29,9 +33,14 @@ public class LibraryWindow extends JFrame {
         JButton generalLibraryButton = new JButton("Explore General Library");
         generalLibraryButton.setFont(new Font("SansSerif", Font.PLAIN, 18));
 
+        JButton personalLibraryButton = new JButton("Access Personal Library");
+        personalLibraryButton.setFont(new Font("SansSerif", Font.PLAIN, 18));
+
         generalLibraryButton.addActionListener(e -> openGeneralLibraryWindow());
+        personalLibraryButton.addActionListener(e -> openPersonalLibraryWindow());
 
         buttonPanel.add(generalLibraryButton);
+        buttonPanel.add(personalLibraryButton);
         mainPanel.add(buttonPanel, BorderLayout.SOUTH);
 
 
@@ -40,11 +49,17 @@ public class LibraryWindow extends JFrame {
     }
 
     private void openGeneralLibraryWindow(){
-        GeneralLibraryWindow generalLibraryWindow = new GeneralLibraryWindow();
+        GeneralLibraryWindow generalLibraryWindow = new GeneralLibraryWindow(currentUser);
         generalLibraryWindow.setVisible(true);
     }
 
+    private void openPersonalLibraryWindow(){
+        PersonalLibraryWindow personalLibraryWindow = new PersonalLibraryWindow(currentUser);
+        personalLibraryWindow.setVisible(true);
+    }
+
+
     public static void main(String[] args) {
-        SwingUtilities.invokeLater(LibraryWindow::new);
+        SwingUtilities.invokeLater(() -> new LibraryWindow(currentUser));
     }
 }

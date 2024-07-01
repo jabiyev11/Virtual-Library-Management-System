@@ -7,7 +7,7 @@ import java.util.Map;
 public class UserManager {
 
     private static final String CSV_USER_FILE_PATH = "data/UserData.csv";
-    private Map<String, User> users;
+    private static Map<String, User> users;
 
     public UserManager() {
         this.users = new HashMap<>();
@@ -60,7 +60,7 @@ public class UserManager {
     }
 
 
-    public User getUserByUsername(String username) {
+    public static User getUserByUsername(String username) {
 
         for (User user : users.values()) {
             if (user.getUsername().equals(username)) {

@@ -128,7 +128,8 @@ public class LoginWindow extends JFrame {
                     }
 
                     setVisible(false);
-                    SwingUtilities.invokeLater(() -> new LibraryWindow().setVisible(true));
+                    User currentUser = UserManager.getUserByUsername(username);
+                    SwingUtilities.invokeLater(() -> new LibraryWindow(currentUser).setVisible(true));
 
                 } else {
                     JOptionPane.showMessageDialog(LoginWindow.this, "Invalid Credentials");

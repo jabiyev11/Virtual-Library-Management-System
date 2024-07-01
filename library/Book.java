@@ -33,6 +33,13 @@ public class Book {
         this.isAvailable = isAvailable;
     }
 
+    public Book( String title, String author, BookGenre bookGenre, LocalDate publicationDate) {
+        this.title = title;
+        this.author = author;
+        this.bookGenre = bookGenre;
+        this.publicationDate = publicationDate;
+    }
+
     public Long getBookID() {
         return bookID;
     }
