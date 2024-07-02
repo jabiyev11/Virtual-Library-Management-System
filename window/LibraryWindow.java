@@ -8,14 +8,18 @@ import javax.swing.*;
 import java.awt.*;
 import java.util.List;
 
-public class LibraryWindow extends JFrame {
+public class LibraryWindow extends JFrame implements WindowCompatible{
 
     private static final String CSV_GENERAL_LIBRARY_FILE_PATH = "data/GeneralLibraryData.csv";
     private static User currentUser;
 
     public LibraryWindow(User currentUser) {
         this.currentUser = currentUser;
+        setupUI();
+    }
 
+    @Override
+    public void setupUI() {
         setTitle("Library System");
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         setSize(900, 600);

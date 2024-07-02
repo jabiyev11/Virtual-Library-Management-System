@@ -15,7 +15,7 @@ public class GeneralLibrary {
         List<Book> books = new ArrayList<>();
         String line;
 
-        try(BufferedReader reader = new BufferedReader(new FileReader(CSV_GENERAL_LIBRARY_FILE_PATH))){
+        try(BufferedReader reader = new BufferedReader(new FileReader(filename))){
             reader.readLine();
 
             while((line = reader.readLine()) != null){

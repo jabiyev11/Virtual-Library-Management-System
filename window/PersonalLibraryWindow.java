@@ -13,20 +13,32 @@ import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 
-public class PersonalLibraryWindow extends JFrame {
+public class PersonalLibraryWindow extends JFrame implements WindowCompatible, TableCompatible {
 
     private User currentUser;
     private JTable personalLibraryTable;
+    private JPanel mainPanel;
 
     private static final String CSV_PERSONAL_LIBRARY_FILE_PATH = "data/PersonalLibraryData.csv";
 
     public PersonalLibraryWindow(User currentUser){
         this.currentUser = currentUser;
+        setupUI();
+        setupTable(mainPanel);
+
+    }
+
+    @Override
+    public void setupUI() {
         setTitle("Personal Library");
         setSize(600, 400);
         setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
+        mainPanel = new JPanel();
 
+    }
 
+    @Override
+    public void setupTable(JPanel mainPanel) {
         List<Book> personalBooks = loadPersonalBooks();
 
         String[] columnNames = {"Title", "Author", "Genre", "Publication Date"};
@@ -41,9 +53,9 @@ public class PersonalLibraryWindow extends JFrame {
         }
 
         personalLibraryTable = new JTable(data, columnNames);
+        mainPanel.add(personalLibraryTable);
+        add(mainPanel);
         add(new JScrollPane(personalLibraryTable), BorderLayout.CENTER);
-
-
     }
 
 
@@ -56,7 +68,6 @@ public class PersonalLibraryWindow extends JFrame {
             while((line = reader.readLine()) != null){
                 String[] parts = line.split(",");
                 if(parts[0].equals(currentUser.getUserID())){
-//                    long bookID = Long.parseLong(parts[1]);
                     String author = parts[1];
                     String title = parts[2];
                     BookGenre genre = BookGenre.valueOf(parts[3]);

@@ -8,12 +8,10 @@ import user.UserRole;
 
 import javax.swing.*;
 import java.awt.*;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
 import java.util.Arrays;
 import java.util.List;
 
-public class SignupWindow extends JFrame {
+public class SignupWindow extends JFrame implements WindowCompatible{
 
     private JTextField usernameField;
     private JPasswordField passwordField;
@@ -22,16 +20,19 @@ public class SignupWindow extends JFrame {
     private JTextField addressField;
     private JTextField phoneNumberField;
     private JTextField emailField;
-    private JButton signupButton;
-    private JCheckBox showPasswordCheckbox;
     private UserManager userManager;
 
 
     public SignupWindow() {
         this.userManager = new UserManager();
+        setupUI();
+    }
+
+    @Override
+    public void setupUI() {
         setTitle("Sign Up");
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        setSize(500, 550); // Adjusted size to accommodate additional fields
+        setSize(500, 550);
         setLocationRelativeTo(null);
         setLayout(new BorderLayout());
         setResizable(false);
@@ -61,8 +62,8 @@ public class SignupWindow extends JFrame {
         phoneNumberField = new JTextField(15);
         emailField = new JTextField(15);
 
-        signupButton = new JButton("Sign Up");
-        showPasswordCheckbox = new JCheckBox("Show Password");
+        JButton signupButton = new JButton("Sign Up");
+        JCheckBox showPasswordCheckbox = new JCheckBox("Show Password");
 
 
         showPasswordCheckbox.addActionListener(e -> {
@@ -155,6 +156,7 @@ public class SignupWindow extends JFrame {
 
         JPanel buttonPanel = new JPanel(new FlowLayout(FlowLayout.CENTER, 10, 10));
         signupButton.setPreferredSize(new Dimension(120, 35));
+        signupButton.addActionListener(e -> signupButtonLogic());
         buttonPanel.add(signupButton);
 
         gbc.gridx = 0;
@@ -171,55 +173,52 @@ public class SignupWindow extends JFrame {
 
         add(panel);
         setVisible(true);
+    }
 
-        signupButton.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                String username = usernameField.getText();
-                char[] password = passwordField.getPassword();
-                char[] reEnteredPassword = reEnterPasswordField.getPassword();
-                String name = nameField.getText();
-                String address = addressField.getText();
-                String phoneNumber = phoneNumberField.getText();
-                String email = emailField.getText();
+    private void signupButtonLogic() {
+        String username = usernameField.getText();
+        char[] password = passwordField.getPassword();
+        char[] reEnteredPassword = reEnterPasswordField.getPassword();
+        String name = nameField.getText();
+        String address = addressField.getText();
+        String phoneNumber = phoneNumberField.getText();
+        String email = emailField.getText();
 
-                if (username.isEmpty() || password.length == 0 || reEnteredPassword.length == 0 ||
-                        name.isEmpty() || address.isEmpty() || phoneNumber.isEmpty() || email.isEmpty()) {
-                    JOptionPane.showMessageDialog(SignupWindow.this, "Please fill all the fields");
-                    return;
-                }
+        if (username.isEmpty() || password.length == 0 || reEnteredPassword.length == 0 ||
+                name.isEmpty() || address.isEmpty() || phoneNumber.isEmpty() || email.isEmpty()) {
+            JOptionPane.showMessageDialog(SignupWindow.this, "Please fill all the fields");
+            return;
+        }
 
-                if (!Arrays.equals(password, reEnteredPassword)) {
-                    JOptionPane.showMessageDialog(SignupWindow.this, "Passwords do not match");
-                    passwordField.setText("");
-                    reEnterPasswordField.setText("");
-                    return;
-                }
+        if (!Arrays.equals(password, reEnteredPassword)) {
+            JOptionPane.showMessageDialog(SignupWindow.this, "Passwords do not match");
+            passwordField.setText("");
+            reEnterPasswordField.setText("");
+            return;
+        }
 
-                List<String> passwordErrors = PasswordChecker.validateStrongPassword(username, new String (password));
-                if(!passwordErrors.isEmpty()){
-                    StringBuilder errorMessage = new StringBuilder();
-                    for(String error : passwordErrors){
-                        errorMessage.append(error).append("\n");
-                    }
-                    JOptionPane.showMessageDialog(SignupWindow.this, errorMessage.toString());
-                    clearFields();
-                    return;
-                }
-
-                if (userManager.isUsernameTaken(username)) {
-                    JOptionPane.showMessageDialog(SignupWindow.this, "Username is already taken");
-                } else {
-                    User newUser = new User(username, new String(password), name, address, phoneNumber, email, UserRole.USER);
-                    userManager.addUser(newUser);
-                    JOptionPane.showMessageDialog(SignupWindow.this, "User registered successfully");
-                    clearFields();
-                    setVisible(false);
-                    SwingUtilities.invokeLater(() -> new LoginWindow().setVisible(true));
-
-                }
+        List<String> passwordErrors = PasswordChecker.validateStrongPassword(username, new String (password));
+        if(!passwordErrors.isEmpty()){
+            StringBuilder errorMessage = new StringBuilder();
+            for(String error : passwordErrors){
+                errorMessage.append(error).append("\n");
             }
-        });
+            JOptionPane.showMessageDialog(SignupWindow.this, errorMessage.toString());
+            clearFields();
+            return;
+        }
+
+        if (userManager.isUsernameTaken(username)) {
+            JOptionPane.showMessageDialog(SignupWindow.this, "Username is already taken");
+        } else {
+            User newUser = new User(username, new String(password), name, address, phoneNumber, email, UserRole.USER);
+            userManager.addUser(newUser);
+            JOptionPane.showMessageDialog(SignupWindow.this, "User registered successfully");
+            clearFields();
+            setVisible(false);
+            SwingUtilities.invokeLater(() -> new LoginWindow().setVisible(true));
+
+        }
     }
 
     public void clearFields() {

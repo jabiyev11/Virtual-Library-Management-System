@@ -12,10 +12,9 @@ import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
 import java.io.FileWriter;
 import java.io.IOException;
-import java.util.ArrayList;
 import java.util.List;
 
-public class GeneralLibraryWindow extends JFrame {
+public class GeneralLibraryWindow extends JFrame implements WindowCompatible, TableCompatible{
 
     private static final String CSV_GENERAL_LIBRARY_FILE_PATH = "data/GeneralLibraryData.csv";
     private static final String CSV_PERSONAL_LIBRARY_FILE_PATH = "data/PersonalLibraryData.csv";
@@ -25,27 +24,32 @@ public class GeneralLibraryWindow extends JFrame {
     private DefaultTableModel model;
     private TableRowSorter<DefaultTableModel> sorter;
     private JTextField searchField;
+    private JPanel mainPanel;
 
     public GeneralLibraryWindow(User currentUser) {
 
         this.currentUser = currentUser;
 
+        books = loadBooks();
+        setupUI();
+        setupTable(mainPanel);
+        setupSearchBar(mainPanel);
+
+    }
+
+    @Override
+    public void setupUI() {
         setTitle("General Library");
         setSize(800, 600);
         setLocationRelativeTo(null);
         setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
 
-        JPanel mainPanel = new JPanel(new BorderLayout());
+        mainPanel = new JPanel(new BorderLayout());
         mainPanel.setBorder(BorderFactory.createEmptyBorder(10, 10, 10, 10));
         add(mainPanel);
 
 
-        books = loadBooks();
-        setupTable(mainPanel);
-        setupSearchBar(mainPanel);
-
         JPanel buttonPanel = new JPanel(new FlowLayout(FlowLayout.CENTER));
-
 
 
         JButton addBookToPersonalLibrary = new JButton("Add to Favourite List");
@@ -58,21 +62,22 @@ public class GeneralLibraryWindow extends JFrame {
         mainPanel.add(buttonPanel, BorderLayout.SOUTH);
 
 
-
         setVisible(true);
+
     }
 
-    private List<Book> loadBooks(){
+    private List<Book> loadBooks() {
         return GeneralLibrary.readBooksFromCSV(CSV_GENERAL_LIBRARY_FILE_PATH);
     }
 
-    private void setupTable(JPanel mainPanel){
+    @Override
+    public void setupTable(JPanel mainPanel) {
 
         String[] columnNames = {"Title", "Author", "Genre", "Publication Date", "Availability"};
 
-                model = new DefaultTableModel(columnNames, 0);
+        model = new DefaultTableModel(columnNames, 0);
 
-        for(Book book : books){
+        for (Book book : books) {
             Object[] row = {
                     book.getTitle(),
                     book.getAuthor(),
@@ -92,37 +97,37 @@ public class GeneralLibraryWindow extends JFrame {
     }
 
 
-    private void addToPersonalLibrary(){
+    private void addToPersonalLibrary() {
         int selectedRow = table.getSelectedRow();
 
-        if(selectedRow >= 0){
+        if (selectedRow >= 0) {
             String title = table.getValueAt(selectedRow, 0).toString();
             String author = table.getValueAt(selectedRow, 1).toString();
             String genre = table.getValueAt(selectedRow, 2).toString();
             String publicationDate = table.getValueAt(selectedRow, 3).toString();
 
-            try(FileWriter writer = new FileWriter(CSV_PERSONAL_LIBRARY_FILE_PATH, true)){
+            try (FileWriter writer = new FileWriter(CSV_PERSONAL_LIBRARY_FILE_PATH, true)) {
                 writer.write(currentUser.getUserID() + "," + title + "," + author + "," + genre +
                         "," + publicationDate + "\n");
                 JOptionPane.showMessageDialog(null, "Book added to Personal Library");
-            }catch (IOException ex){
+            } catch (IOException ex) {
                 ex.printStackTrace();
                 JOptionPane.showMessageDialog(null, "Failed to add book to Personal Library");
             }
-        }else{
+        } else {
             JOptionPane.showMessageDialog(null, "Please first select book to add to Personal Library");
         }
     }
 
 
-    private void setupSearchBar(JPanel mainPanel){
+    private void setupSearchBar(JPanel mainPanel) {
 
         JPanel searchPanel = new JPanel(new FlowLayout());
         searchField = new JTextField(20);
 
         searchField.addKeyListener(new KeyAdapter() {
-            @Override
-            public void keyReleased(KeyEvent e) {
+            @Override                                           //Cannot use Lambda because of
+            public void keyReleased(KeyEvent e) {               //too many abstract methods in KeyAdapter class
                 performSearch();
             }
         });
@@ -138,9 +143,9 @@ public class GeneralLibraryWindow extends JFrame {
         RowFilter<DefaultTableModel, Integer> rowFilter = new RowFilter<DefaultTableModel, Integer>() {
             @Override
             public boolean include(Entry<? extends DefaultTableModel, ? extends Integer> entry) {
-                for(int i = 0; i < entry.getModel().getColumnCount(); i++){
+                for (int i = 0; i < entry.getModel().getColumnCount(); i++) {
                     String cellValue = entry.getStringValue(i).toLowerCase();
-                    if(cellValue.contains(query)){
+                    if (cellValue.contains(query)) {
                         return true;
                     }
                 }

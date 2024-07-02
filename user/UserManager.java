@@ -10,7 +10,7 @@ public class UserManager {
     private static Map<String, User> users;
 
     public UserManager() {
-        this.users = new HashMap<>();
+        users = new HashMap<>();
         loadUsers();
         addPredefinedLibrarian();
     }

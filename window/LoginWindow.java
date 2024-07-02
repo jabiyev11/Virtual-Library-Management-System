@@ -9,28 +9,32 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
 import java.util.Arrays;
 import java.util.List;
 
-public class LoginWindow extends JFrame {
+public class LoginWindow extends JFrame implements WindowCompatible{
 
     private JTextField usernameField;
     private JPasswordField passwordField;
-    private JButton loginButton;
-    private JCheckBox showPasswordCheckbox;
-    private JPanel panel;
     private UserManager userManager;
 
 
     public LoginWindow() {
         userManager = new UserManager();
+        setupUI();
+    }
+
+    @Override
+    public void setupUI() {
         setTitle("Login");
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         setSize(400, 450);
         setLocationRelativeTo(null);
         setLayout(new BorderLayout());
         setResizable(false);
-        panel = new JPanel(new GridBagLayout());
+        JPanel panel = new JPanel(new GridBagLayout());
         GridBagConstraints gbc = new GridBagConstraints();
         gbc.insets = new Insets(5, 5, 5, 5);
         gbc.anchor = GridBagConstraints.WEST;
@@ -39,8 +43,8 @@ public class LoginWindow extends JFrame {
         JLabel passwordLabel = new JLabel("Password:");
         usernameField = new JTextField(15);
         passwordField = new JPasswordField(15);
-        loginButton = new JButton("Log In");
-        showPasswordCheckbox = new JCheckBox("Show Password");
+        JButton loginButton = new JButton("Log In");
+        JCheckBox showPasswordCheckbox = new JCheckBox("Show Password");
 
         showPasswordCheckbox.addActionListener(e -> {
             if (showPasswordCheckbox.isSelected()) {
@@ -53,8 +57,8 @@ public class LoginWindow extends JFrame {
         JLabel signUpLabel = new JLabel("Want to create new account? Sign Up");
         signUpLabel.setForeground(Color.BLUE);
         signUpLabel.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
-        signUpLabel.addMouseListener(new java.awt.event.MouseAdapter() {
-            public void mouseClicked(java.awt.event.MouseEvent evt) {
+        signUpLabel.addMouseListener(new MouseAdapter() {
+            public void mouseClicked(MouseEvent evt) {
                 dispose();
                 SwingUtilities.invokeLater(() -> new SignupWindow().setVisible(true));
             }
@@ -83,6 +87,7 @@ public class LoginWindow extends JFrame {
 
         JPanel buttonPanel = new JPanel(new FlowLayout(FlowLayout.CENTER, 10, 10));
         loginButton.setPreferredSize(new Dimension(120, 35));
+        loginButton.addActionListener(e -> loginButtonLogic());
         buttonPanel.add(loginButton);
 
         gbc.gridx = 0;
@@ -99,47 +104,42 @@ public class LoginWindow extends JFrame {
 
         add(panel);
         setVisible(true);
+    }
+
+    private void loginButtonLogic() {
+        String username = usernameField.getText();
+        char[] password = passwordField.getPassword();
 
 
-        loginButton.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                String username = usernameField.getText();
-                char[] password = passwordField.getPassword();
+        if (username.isEmpty() || password.length == 0) {
+            JOptionPane.showMessageDialog(LoginWindow.this, "Please enter both username and password");
+            return;
+        }
 
 
-                if (username.isEmpty() || password.length == 0) {
-                    JOptionPane.showMessageDialog(LoginWindow.this, "Please enter both username and password");
-                    return;
-                }
+        if (userManager.validateUser(username, password)) {
 
+            char[] expectedLibrarianPassword = "Lib@1234".toCharArray();
 
-                if (userManager.validateUser(username, password)) {
+            if(username.equals("librarian") && Arrays.equals(password, expectedLibrarianPassword)){
+                JOptionPane.showMessageDialog(LoginWindow.this, "Librarian logged in successfully");
+            }
 
-                    char[] expectedLibrarianPassword = "Lib@1234".toCharArray();
-
-                    if(username.equals("librarian") && Arrays.equals(password, expectedLibrarianPassword)){
-                        JOptionPane.showMessageDialog(LoginWindow.this, "Librarian logged in successfully");
-                    }
-
-                    else{
-                        JOptionPane.showMessageDialog(LoginWindow.this, "Successful log in. Welcome " + username);
-
-                    }
-
-                    setVisible(false);
-                    User currentUser = UserManager.getUserByUsername(username);
-                    SwingUtilities.invokeLater(() -> new LibraryWindow(currentUser).setVisible(true));
-
-                } else {
-                    JOptionPane.showMessageDialog(LoginWindow.this, "Invalid Credentials");
-                    usernameField.setText("");
-                    passwordField.setText("");
-
-                }
+            else{
+                JOptionPane.showMessageDialog(LoginWindow.this, "Successful log in. Welcome " + username);
 
             }
-        });
+
+            setVisible(false);
+            User currentUser = UserManager.getUserByUsername(username);
+            SwingUtilities.invokeLater(() -> new LibraryWindow(currentUser).setVisible(true));
+
+        } else {
+            JOptionPane.showMessageDialog(LoginWindow.this, "Invalid Credentials");
+            usernameField.setText("");
+            passwordField.setText("");
+
+        }
     }
 
 
