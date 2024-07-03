@@ -38,6 +38,7 @@ public class User {
         this.address = address;
         this.phoneNumber = phoneNumber;
         this.email = email;
+        this.role = UserRole.USER;      //Will automatically take it as USER
     }
 
     //For Librarian creation, additional constructor because we do not want to write his credentials in the csv file

@@ -23,7 +23,7 @@ public class Book {
     }
 
 
-    //To load books from csv, we will need to pass ID
+    //To load books from general csv, we will need to pass ID
     public Book(Long bookID, String title, String author, BookGenre bookGenre, LocalDate publicationDate, boolean isAvailable) {
         this.bookID = bookID;
         this.title = title;
@@ -33,6 +33,7 @@ public class Book {
         this.isAvailable = isAvailable;
     }
 
+    //To load books from personal books
     public Book( String title, String author, BookGenre bookGenre, LocalDate publicationDate) {
         this.title = title;
         this.author = author;

@@ -1,5 +1,3 @@
-bookID,title,author,bookGenre,publicationDate,isAvailable
-1,The Great Gatsby,F. Scott Fitzgerald,FICTION,1925-04-10,true
 2,To Kill a Mockingbird,Harper Lee,FICTION,1960-07-11,true
 3,1984,George Orwell,DYSTOPIAN,1949-06-08,true
 4,Pride and Prejudice,Jane Austen,ROMANCE,1813-01-28,true
@@ -72,3 +70,4 @@ bookID,title,author,bookGenre,publicationDate,isAvailable
 72,Harry Potter and the Philosopher's Stone,J.K. Rowling,FANTASY,1997-06-26,true
 73,The Hunger Games,Suzanne Collins,DYSTOPIAN,2008-09-14,true
 74,Divergent,Veronica Roth,DYSTOPIAN,2011-04-25,true
+2,The Subtle Art of Giving a Fuck,Mark Manson,ADVENTURE,2016-12-23,true

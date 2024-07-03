@@ -3,6 +3,7 @@ package window;
 import library.Book;
 import library.GeneralLibrary;
 import user.User;
+import user.UserRole;
 
 import javax.swing.*;
 import java.awt.*;
@@ -25,6 +26,7 @@ public class LibraryWindow extends JFrame implements WindowCompatible{
         setSize(900, 600);
         setLocationRelativeTo(null);
 
+
         JPanel mainPanel = new JPanel(new BorderLayout());
         mainPanel.setBorder(BorderFactory.createEmptyBorder(20, 20, 20, 20));
 
@@ -36,18 +38,20 @@ public class LibraryWindow extends JFrame implements WindowCompatible{
 
         JButton generalLibraryButton = new JButton("Explore General Library");
         generalLibraryButton.setFont(new Font("SansSerif", Font.PLAIN, 18));
-
-        JButton personalLibraryButton = new JButton("Access Personal Library");
-        personalLibraryButton.setFont(new Font("SansSerif", Font.PLAIN, 18));
-
         generalLibraryButton.addActionListener(e -> openGeneralLibraryWindow());
-        personalLibraryButton.addActionListener(e -> openPersonalLibraryWindow());
-
         buttonPanel.add(generalLibraryButton);
-        buttonPanel.add(personalLibraryButton);
         mainPanel.add(buttonPanel, BorderLayout.SOUTH);
 
+        if(currentUser.getRole() == UserRole.USER) {
+            JButton personalLibraryButton = new JButton("Access Personal Library");
 
+            personalLibraryButton.setFont(new Font("SansSerif", Font.PLAIN, 18));
+            personalLibraryButton.addActionListener(e -> openPersonalLibraryWindow());
+
+            buttonPanel.add(personalLibraryButton);
+            mainPanel.add(buttonPanel, BorderLayout.SOUTH);
+
+        }
         add(mainPanel);
         setVisible(true);
     }
