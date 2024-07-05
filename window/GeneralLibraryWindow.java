@@ -1,34 +1,40 @@
 package window;
 
 
-import dialog.UpdateBookDialog;
+
 import library.Book;
-import library.BookGenre;
 import library.GeneralLibrary;
+import library.PersonalLibrary;
+import transaction.Transaction;
+import transaction.TransactionType;
 import user.User;
-import user.UserManager;
 import user.UserRole;
-import window.AddBookDialog;
+
 
 import javax.swing.*;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.table.TableRowSorter;
 import java.awt.*;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
-import java.io.BufferedReader;
 import java.io.BufferedWriter;
 import java.io.FileWriter;
 import java.io.IOException;
+import java.sql.SQLOutput;
 import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.util.HashMap;
+import java.util.Hashtable;
 import java.util.List;
+import java.util.UUID;
+
+import dialog.*;
 
 public class GeneralLibraryWindow extends JFrame implements WindowCompatible, TableCompatible {
 
     private static final String CSV_GENERAL_LIBRARY_FILE_PATH = "data/GeneralLibraryData.csv";
     private static final String CSV_PERSONAL_LIBRARY_FILE_PATH = "data/PersonalLibraryData.csv";
+    private static final String CSV_BORROWED_BOOKS_FILE_PATH = "data/BorrowedBooksData.csv";
     private List<Book> books;
     private JTable table;
     private User currentUser;
@@ -66,8 +72,18 @@ public class GeneralLibraryWindow extends JFrame implements WindowCompatible, Ta
             addBookToPersonalLibrary.setFont(new Font("SansSerif", Font.PLAIN, 13));
             addBookToPersonalLibrary.setPreferredSize(new Dimension(150, 30));
             addBookToPersonalLibrary.addActionListener(e -> addToPersonalLibrary());
+
+            JButton borrowBook = new JButton("Borrow Book");
+            borrowBook.setFont(new Font("SansSerif", Font.PLAIN, 13));
+            borrowBook.setPreferredSize(new Dimension(150, 30));
+            borrowBook.addActionListener(e -> borrowBook());
+
+
             buttonPanel.add(addBookToPersonalLibrary);
+            buttonPanel.add(borrowBook);
+
             mainPanel.add(buttonPanel, BorderLayout.SOUTH);
+
         } else if (currentUser.getRole() == UserRole.LIBRARIAN) {      //Can use else, but else if is better if in the future we will have additional role
             JButton addNewBook = new JButton("Add Book");
             addNewBook.setFont(new Font("SansSerif", Font.PLAIN, 13));
@@ -84,6 +100,7 @@ public class GeneralLibraryWindow extends JFrame implements WindowCompatible, Ta
             removeBook.setPreferredSize(new Dimension(150, 30));
             removeBook.addActionListener(e -> removeBook());
 
+
             buttonPanel.add(addNewBook);
             buttonPanel.add(updateBook);
             buttonPanel.add(removeBook);
@@ -96,18 +113,76 @@ public class GeneralLibraryWindow extends JFrame implements WindowCompatible, Ta
 
     }
 
+    private void borrowBook(){
+
+        int selectedRow = table.getSelectedRow();
+
+        if(selectedRow >= 0){
+            Book selectedBook = books.get(selectedRow);
+            if(selectedBook.isAvailable()){
+                selectedBook.setAvailable(false);
+                updateBookAvailabilityInCSV(selectedBook);
+                recordBorrowTransaction(selectedBook);
+                updateTable();
+                BorrowedBooksWindow borrowedBooksWindow = new BorrowedBooksWindow(currentUser);
+                borrowedBooksWindow.setVisible(true);
+                JOptionPane.showMessageDialog(this, "Book borrowed successfully");
+            }else{
+                JOptionPane.showMessageDialog(this, "Book is not available for borrowing");
+            }
+        }else{
+            JOptionPane.showMessageDialog(this, "Please first select book to borrow");
+        }
+    }
+
+    private void updateBookAvailabilityInCSV(Book book) {
+        try (BufferedWriter writer = new BufferedWriter(new FileWriter(CSV_GENERAL_LIBRARY_FILE_PATH))) {
+            for (Book b : books) {
+                writer.write(b.getBookID() + "," + b.getTitle() + "," + b.getAuthor() + "," + b.getBookGenre() + "," +
+                        b.getPublicationDate() + "," + b.isAvailable());
+                writer.newLine();
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
+    private void recordBorrowTransaction(Book book){
+        String transactionID = generateTransactionID();
+
+        LocalDateTime borrowTime = LocalDateTime.now();
+        LocalDateTime returnTime = LocalDateTime.of(9999, 12, 31, 23, 59, 59);
+
+        Transaction transaction = new Transaction(transactionID, currentUser.getUserID(), book.getBookID(),
+                borrowTime, returnTime, TransactionType.BORROW);
+
+        try(BufferedWriter writer = new BufferedWriter(new FileWriter(CSV_BORROWED_BOOKS_FILE_PATH, true))){
+
+            writer.write(transaction.getTransactionID() + "," + transaction.getUserID() + "," +
+                    transaction.getBookID() + "," + book.getTitle() + "," + book.getAuthor() + "," + transaction.getBorrowDate() + "," + transaction.getReturnDate() +
+                    "," + transaction.getTransactionType().toString());
+            writer.newLine();
+        } catch (IOException e) {
+            e.printStackTrace();
+            System.out.println("Problem in writing details of borrowed books");
+        }
+    }
+
+    private String generateTransactionID(){
+        return UUID.randomUUID().toString();
+    }
 
 
 
     private void openAddingBookDialog(){
-        AddBookDialog dialog = new AddBookDialog(this);
+        window.AddBookDialog dialog = new window.AddBookDialog(this);
         dialog.setVisible(true);
 
         Book newBook = dialog.getBook();
         if(newBook != null){
             books.add(newBook);
             updateTable();
-            saveBookToCSV();
+            saveBookToGeneralCSV();
             JOptionPane.showMessageDialog(this, "Book added successfully");
         }
     }
@@ -127,7 +202,8 @@ public class GeneralLibraryWindow extends JFrame implements WindowCompatible, Ta
             if(updatedBook != null){
                 books.set(selectedRow, updatedBook);
                 updateTable();
-                saveBookToCSV();
+                saveBookToGeneralCSV();
+                PersonalLibrary.updatePersonalLibraries(bookToUpdate, updatedBook);
                 JOptionPane.showMessageDialog(this, "Book updated successfully");
             }
         }else{
@@ -139,6 +215,7 @@ public class GeneralLibraryWindow extends JFrame implements WindowCompatible, Ta
         int selectedRow = table.getSelectedRow();
 
         if(selectedRow >= 0){
+            Book bookToRemove = books.get(selectedRow);
             int confirm = JOptionPane.showConfirmDialog(this,
                     "Are you sure you want to remove this book?",
                     "Confirm Removal", JOptionPane.YES_NO_OPTION);
@@ -146,7 +223,8 @@ public class GeneralLibraryWindow extends JFrame implements WindowCompatible, Ta
             if(confirm == JOptionPane.YES_OPTION){
                 books.remove(selectedRow);
                 updateTable();
-                saveBookToCSV();
+                saveBookToGeneralCSV();
+                PersonalLibrary.removeBookFromPersonalLibraries(bookToRemove);
                 JOptionPane.showMessageDialog(this, "Book removed successfully");
             }
         }else{
@@ -155,7 +233,7 @@ public class GeneralLibraryWindow extends JFrame implements WindowCompatible, Ta
 
     }
 
-    private void saveBookToCSV() {
+    private void saveBookToGeneralCSV() {
         try (BufferedWriter writer = new BufferedWriter(new FileWriter(CSV_GENERAL_LIBRARY_FILE_PATH))) {
             for (Book book : books) {
                 writer.write(book.getBookID() + "," + book.getTitle() + "," + book.getAuthor() + "," +

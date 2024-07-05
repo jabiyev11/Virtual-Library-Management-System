@@ -16,7 +16,7 @@ public class GeneralLibrary {
         String line;
 
         try(BufferedReader reader = new BufferedReader(new FileReader(filename))){
-            reader.readLine();
+//            reader.readLine();
 
             while((line = reader.readLine()) != null){
                 String[] values = line.split(",");
@@ -39,5 +39,5 @@ public class GeneralLibrary {
         return books;
     }
 
-//    public static void
+
 }

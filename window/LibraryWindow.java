@@ -44,11 +44,17 @@ public class LibraryWindow extends JFrame implements WindowCompatible{
 
         if(currentUser.getRole() == UserRole.USER) {
             JButton personalLibraryButton = new JButton("Access Personal Library");
+            JButton borrowedBooksButton = new JButton("Access Borrowed Books List");
 
             personalLibraryButton.setFont(new Font("SansSerif", Font.PLAIN, 18));
             personalLibraryButton.addActionListener(e -> openPersonalLibraryWindow());
 
+            borrowedBooksButton.setFont(new Font("SansSerif", Font.PLAIN, 18));
+            borrowedBooksButton.addActionListener(e -> openBorrowedBooksWindow());
+
+
             buttonPanel.add(personalLibraryButton);
+            buttonPanel.add(borrowedBooksButton);
             mainPanel.add(buttonPanel, BorderLayout.SOUTH);
 
         }
@@ -64,6 +70,10 @@ public class LibraryWindow extends JFrame implements WindowCompatible{
     private void openPersonalLibraryWindow(){
         PersonalLibraryWindow personalLibraryWindow = new PersonalLibraryWindow(currentUser);
         personalLibraryWindow.setVisible(true);
+    }
+    private void openBorrowedBooksWindow(){
+        BorrowedBooksWindow borrowedBooksWindow = new BorrowedBooksWindow(currentUser);
+        borrowedBooksWindow.setVisible(true);
     }
 
 

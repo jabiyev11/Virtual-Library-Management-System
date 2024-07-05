@@ -2,10 +2,14 @@ package library;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.util.Objects;
 
 public class Book {
 
-    private static Long counter = 1L;
+    //Populated 74 books initially by just writing to csv that is why did not start from 1 but 75
+    //Could be an inefficient way, not sure
+
+    private static Long counter = 75L;
     private Long bookID;
     private String title;
     private String author;
@@ -14,7 +18,7 @@ public class Book {
     private boolean isAvailable;
 
     public Book(String title, String author, BookGenre bookGenre, LocalDate publicationDate, boolean isAvailable) {
-        this.bookID = counter++;
+        this.bookID = ++counter;
         this.title = title;
         this.author = author;
         this.bookGenre = bookGenre;
@@ -87,5 +91,30 @@ public class Book {
 
     public void setAvailable(boolean available) {
         isAvailable = available;
+    }
+
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (!(o instanceof Book book)) return false;
+        return isAvailable == book.isAvailable && Objects.equals(bookID, book.bookID) && Objects.equals(title, book.title) && Objects.equals(author, book.author) && bookGenre == book.bookGenre && Objects.equals(publicationDate, book.publicationDate);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(bookID, title, author, bookGenre, publicationDate, isAvailable);
+    }
+
+    @Override
+    public String toString() {
+        return "Book{" +
+                "bookID=" + bookID +
+                ", title='" + title + '\'' +
+                ", author='" + author + '\'' +
+                ", bookGenre=" + bookGenre +
+                ", publicationDate=" + publicationDate +
+                ", isAvailable=" + isAvailable +
+                '}';
     }
 }
