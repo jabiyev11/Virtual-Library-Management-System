@@ -9,14 +9,13 @@ import java.util.List;
 
 public class GeneralLibrary {
 
-//    private static final String CSV_GENERAL_LIBRARY_FILE_PATH = "data/GeneralLibraryData.csv";
 
     public static List<Book> readBooksFromCSV(String filename){
         List<Book> books = new ArrayList<>();
         String line;
 
         try(BufferedReader reader = new BufferedReader(new FileReader(filename))){
-//            reader.readLine();
+
 
             while((line = reader.readLine()) != null){
                 String[] values = line.split(",");

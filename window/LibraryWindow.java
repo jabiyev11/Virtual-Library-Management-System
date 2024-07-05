@@ -11,7 +11,6 @@ import java.util.List;
 
 public class LibraryWindow extends JFrame implements WindowCompatible{
 
-    private static final String CSV_GENERAL_LIBRARY_FILE_PATH = "data/GeneralLibraryData.csv";
     private static User currentUser;
 
     public LibraryWindow(User currentUser) {

@@ -16,7 +16,7 @@ import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
-public class TransactionHistoryWindow extends JFrame {
+public class TransactionHistoryWindow extends JFrame implements WindowCompatible{
 
     private static final String CSV_BORROWED_BOOKS_FILE_PATH = "data/BorrowedBooksData.csv";
     private List<BorrowedBookTransaction> transactions;
@@ -32,7 +32,8 @@ public class TransactionHistoryWindow extends JFrame {
         setupUI();
     }
 
-    private void setupUI() {
+    @Override
+    public void setupUI() {
         JPanel mainPanel = new JPanel(new BorderLayout());
         mainPanel.setBorder(BorderFactory.createEmptyBorder(20, 20, 20, 20));
 
