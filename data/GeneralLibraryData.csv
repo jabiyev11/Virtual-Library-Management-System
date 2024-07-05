@@ -8,7 +8,7 @@
 11,Crime and Punishment,Fyodor Dostoevsky,CRIME,1866-01-01,true
 12,The Iliad,Homer,CLASSIC,1750-01-01,true
 13,Brave New World,Aldous Huxley,DYSTOPIAN,1932-01-01,true
-14,Wuthering Heights,Emily Brontë,ROMANCE,1847-12-01,true
+14,Wuthering Heights,Emily Brontë,ROMANCE,1847-12-01,false
 15,Jane Eyre,Charlotte Brontë,ROMANCE,1847-10-16,true
 16,The Divine Comedy,Dante Alighieri,POETRY,1320-01-01,true
 17,The Brothers Karamazov,Fyodor Dostoevsky,PHILOSOPHICAL,1880-01-01,true

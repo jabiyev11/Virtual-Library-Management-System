@@ -76,6 +76,12 @@ public class UserManager {
         return user != null && user.getPassword().equals(new String (password));
     }
 
+    public static String getUsernameByID(String userID){
+        User user = users.get(userID);
+
+        return user.getUsername();
+    }
+
     private void addPredefinedLibrarian(){
         String librarianID = "lib1";
         String librarianUsername = "librarian";

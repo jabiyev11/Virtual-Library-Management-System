@@ -39,6 +39,7 @@ public class LibraryWindow extends JFrame implements WindowCompatible{
         JButton generalLibraryButton = new JButton("Explore General Library");
         generalLibraryButton.setFont(new Font("SansSerif", Font.PLAIN, 18));
         generalLibraryButton.addActionListener(e -> openGeneralLibraryWindow());
+
         buttonPanel.add(generalLibraryButton);
         mainPanel.add(buttonPanel, BorderLayout.SOUTH);
 
@@ -55,6 +56,17 @@ public class LibraryWindow extends JFrame implements WindowCompatible{
 
             buttonPanel.add(personalLibraryButton);
             buttonPanel.add(borrowedBooksButton);
+            mainPanel.add(buttonPanel, BorderLayout.SOUTH);
+
+        }else if(currentUser.getRole() == UserRole.LIBRARIAN){
+            JButton viewTransactions = new JButton("Transaction History");
+
+            viewTransactions.setFont(new Font("SansSerif", Font.PLAIN, 18));
+            viewTransactions.setPreferredSize(new Dimension(200, 30));
+            viewTransactions.addActionListener(e -> openTransactionHistoryWindow());
+
+
+            buttonPanel.add(viewTransactions);
             mainPanel.add(buttonPanel, BorderLayout.SOUTH);
 
         }
@@ -74,6 +86,10 @@ public class LibraryWindow extends JFrame implements WindowCompatible{
     private void openBorrowedBooksWindow(){
         BorrowedBooksWindow borrowedBooksWindow = new BorrowedBooksWindow(currentUser);
         borrowedBooksWindow.setVisible(true);
+    }
+    private void openTransactionHistoryWindow(){
+        TransactionHistoryWindow transactionHistoryWindow = new TransactionHistoryWindow();
+        transactionHistoryWindow.setVisible(true);
     }
 
 
