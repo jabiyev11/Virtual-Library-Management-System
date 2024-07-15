@@ -27,6 +27,10 @@ import java.util.HashMap;
 import java.util.Hashtable;
 import java.util.List;
 import java.util.UUID;
+import java.util.function.Consumer;
+import java.util.function.Function;
+import java.util.function.Predicate;
+import java.util.function.Supplier;
 
 import dialog.*;
 
@@ -119,7 +123,7 @@ public class GeneralLibraryWindow extends JFrame implements WindowCompatible, Ta
 
         if(selectedRow >= 0){
             Book selectedBook = books.get(selectedRow);
-            if(selectedBook.isAvailable()){
+            if(isBookAvailable(selectedBook)){
                 selectedBook.setAvailable(false);
                 updateBookAvailabilityInCSV(selectedBook);
                 recordBorrowTransaction(selectedBook);
@@ -136,10 +140,13 @@ public class GeneralLibraryWindow extends JFrame implements WindowCompatible, Ta
     }
 
     private void updateBookAvailabilityInCSV(Book book) {
+
+        Function<Book, String> bookToCSV = b -> b.getBookID() + "," + b.getTitle() + "," + b.getAuthor() + "," + b.getBookGenre() + "," +
+                b.getPublicationDate() + "," + b.isAvailable();
+
         try (BufferedWriter writer = new BufferedWriter(new FileWriter(CSV_GENERAL_LIBRARY_FILE_PATH))) {
             for (Book b : books) {
-                writer.write(b.getBookID() + "," + b.getTitle() + "," + b.getAuthor() + "," + b.getBookGenre() + "," +
-                        b.getPublicationDate() + "," + b.isAvailable());
+                writer.write(bookToCSV.apply(b));
                 writer.newLine();
             }
         } catch (IOException e) {
@@ -148,7 +155,9 @@ public class GeneralLibraryWindow extends JFrame implements WindowCompatible, Ta
     }
 
     private void recordBorrowTransaction(Book book){
-        String transactionID = generateTransactionID();
+        Supplier<String> transactionIDSupplier = this::generateTransactionID;
+
+        String transactionID = transactionIDSupplier.get();
 
         LocalDateTime borrowTime = LocalDateTime.now();
         LocalDateTime returnTime = LocalDateTime.of(9999, 12, 31, 23, 59, 59);
@@ -169,7 +178,8 @@ public class GeneralLibraryWindow extends JFrame implements WindowCompatible, Ta
     }
 
     private String generateTransactionID(){
-        return UUID.randomUUID().toString();
+        Supplier<String> idSupplied = () -> UUID.randomUUID().toString();
+        return idSupplied.get();
     }
 
 
@@ -235,10 +245,16 @@ public class GeneralLibraryWindow extends JFrame implements WindowCompatible, Ta
 
     private void saveBookToGeneralCSV() {
         try (BufferedWriter writer = new BufferedWriter(new FileWriter(CSV_GENERAL_LIBRARY_FILE_PATH))) {
-            for (Book book : books) {
-                writer.write(book.getBookID() + "," + book.getTitle() + "," + book.getAuthor() + "," +
-                        book.getBookGenre() + "," + book.getPublicationDate() + "," + book.isAvailable() + "\n");
-            }
+            Consumer<Book> writeBookToCSV = book -> {
+                try {
+                    writer.write(book.getBookID() + "," + book.getTitle() + "," + book.getAuthor() + "," +
+                            book.getBookGenre() + "," + book.getPublicationDate() + "," + book.isAvailable() + "\n");
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+            };
+
+            books.forEach(writeBookToCSV);
         } catch (IOException e) {
             e.printStackTrace();
             JOptionPane.showMessageDialog(null, "Failed to save books to CSV");
@@ -312,6 +328,11 @@ public class GeneralLibraryWindow extends JFrame implements WindowCompatible, Ta
         } else {
             JOptionPane.showMessageDialog(null, "Please first select book to add to Personal Library");
         }
+    }
+
+    private boolean isBookAvailable(Book book){
+        Predicate<Book> isAvailable = b -> b.isAvailable();
+        return isAvailable.test(book);
     }
 
 
