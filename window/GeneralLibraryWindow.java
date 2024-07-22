@@ -185,7 +185,7 @@ public class GeneralLibraryWindow extends JFrame implements WindowCompatible, Ta
 
 
     private void openAddingBookDialog(){
-        window.AddBookDialog dialog = new window.AddBookDialog(this);
+        AddBookDialog dialog = new AddBookDialog(this);
         dialog.setVisible(true);
 
         Book newBook = dialog.getBook();

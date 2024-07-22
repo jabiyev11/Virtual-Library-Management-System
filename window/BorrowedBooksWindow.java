@@ -14,7 +14,7 @@ import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
-public class BorrowedBooksWindow extends JFrame implements TableCompatible, WindowCompatible{
+public class BorrowedBooksWindow extends JFrame implements TableCompatible, WindowCompatible {
 
 
     private static final String CSV_BORROWED_BOOKS_FILE_PATH = "data/BorrowedBooksData.csv";
@@ -26,19 +26,14 @@ public class BorrowedBooksWindow extends JFrame implements TableCompatible, Wind
     private User currentUser;
 
 
-    public BorrowedBooksWindow(User currentUser){
+    public BorrowedBooksWindow(User currentUser) {
 
-        this.currentUser= currentUser;
+        this.currentUser = currentUser;
 
         mainPanel = new JPanel(new BorderLayout());
 
-
         borrowedBooks = readBorrowedBooksFromCSV();
         setupUI();
-
-
-
-
 
     }
 
@@ -58,11 +53,10 @@ public class BorrowedBooksWindow extends JFrame implements TableCompatible, Wind
         JButton returnButton = new JButton("Return Book");
         returnButton.setFont(new Font("SansSerif", Font.PLAIN, 13));
         returnButton.setPreferredSize(new Dimension(150, 30));
-      returnButton.addActionListener(e -> returnBook());
+        returnButton.addActionListener(e -> returnBook());
 
         buttonPanel.add(returnButton);
         mainPanel.add(buttonPanel, BorderLayout.SOUTH);
-
 
 
         add(mainPanel);
@@ -71,7 +65,7 @@ public class BorrowedBooksWindow extends JFrame implements TableCompatible, Wind
     }
 
     @Override
-    public void setupTable(JPanel mainPanel){
+    public void setupTable(JPanel mainPanel) {
 
 
         String[] columnsNames = {"Title", "Author", "Borrow Date", "Return Date", "Transaction Type"};
@@ -133,14 +127,14 @@ public class BorrowedBooksWindow extends JFrame implements TableCompatible, Wind
         return transaction;
     }
 
-    private void returnBook(){
+    private void returnBook() {
 
         int selectedRow = table.getSelectedRow();
 
-        if(selectedRow == -1){
+        if (selectedRow == -1) {
             JOptionPane.showMessageDialog(this, "Please select a book to return");
             return;
-        }else{
+        } else {
             BorrowedBookTransaction selectedTransaction = borrowedBooks.get(selectedRow);
             selectedTransaction.setReturnTime(LocalDateTime.now());
             selectedTransaction.setTransactionType(TransactionType.RETURN);
@@ -154,8 +148,8 @@ public class BorrowedBooksWindow extends JFrame implements TableCompatible, Wind
         }
 
 
-
     }
+
     private void updateBorrowedBookTransactionInCSV(BorrowedBookTransaction transaction) {
         List<BorrowedBookTransaction> transactions = new ArrayList<>();
 

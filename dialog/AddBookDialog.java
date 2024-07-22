@@ -1,4 +1,4 @@
-package window;
+package dialog;
 
 import library.Book;
 import library.BookGenre;

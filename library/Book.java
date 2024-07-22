@@ -1,15 +1,19 @@
 package library;
 
+import java.io.BufferedReader;
+import java.io.FileReader;
+import java.io.IOException;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.Objects;
+import java.util.concurrent.atomic.AtomicLong;
 
 public class Book {
 
     //Populated 74 books initially by just writing to csv that is why did not start from 1 but 75
     //Could be an inefficient way, not sure
 
-    private static Long counter = 75L;
+    private static AtomicLong counter = new AtomicLong(75L);
     private Long bookID;
     private String title;
     private String author;
@@ -17,8 +21,25 @@ public class Book {
     private LocalDate publicationDate;
     private boolean isAvailable;
 
+
+    static {
+        // Initialize the counter based on existing books in the CSV file
+        try (BufferedReader br = new BufferedReader(new FileReader("data/GeneralLibraryData.csv"))) {
+            String line;
+            while ((line = br.readLine()) != null) {
+                String[] fields = line.split(",");
+                Long id = Long.parseLong(fields[0].trim());
+                if (id > counter.get()) {
+                    counter.set(id);
+                }
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
     public Book(String title, String author, BookGenre bookGenre, LocalDate publicationDate, boolean isAvailable) {
-        this.bookID = ++counter;
+        this.bookID = counter.incrementAndGet();
         this.title = title;
         this.author = author;
         this.bookGenre = bookGenre;
